@@ -1,0 +1,39 @@
+name: 📦 Sync Documentation to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - .github/workflows/dockerhub-description.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  actions: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐙 Update GitHub Repository Description
+        run: |
+          curl -X PATCH \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }} \
+            -d '{"description":"repo moved to deinfreu/hytale-server-container on github and to deinfreu/hytale-server on dockerhub"}'
+
+      - name: 📝 Update Docker Hub README & Short Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          repository: freudend/docker-hytale-server
+          short-description: "repo moved to deinfreu/hytale-server on dockerhub and to deinfreu/hytale-server-container on github"
+          enable-url-completion: true
