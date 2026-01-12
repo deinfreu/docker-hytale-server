@@ -31,6 +31,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: freudend/docker-hytale-server
+          repository: freudend/hytale-server
           short-description: "repo moved to deinfreu/hytale-server on dockerhub and to deinfreu/hytale-server-container on github"
           enable-url-completion: true
